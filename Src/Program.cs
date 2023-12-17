@@ -3,6 +3,7 @@ using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Types;
+using Src.Modules;
 
 namespace Src
 {
@@ -87,9 +88,45 @@ namespace Src
                         }
                         else if (message.Text == "/bitcoin")
                         {
+                            CoinContext coin = new CoinContext();
+                            string coinPrice = coin.GetPrice("/bitcoin");
+
                             await botClient.SendTextMessageAsync(
                                 chat!.Id,
-                                "Bitcoin price:",
+                                $"#Bitcoin price: {coinPrice}",
+                            cancellationToken: ctx
+                                );
+                        }
+                        else if (message.Text == "/eth")
+                        {
+                            CoinContext coin = new CoinContext();
+                            string coinPrice = coin.GetPrice("/eth");
+
+                            await botClient.SendTextMessageAsync(
+                                chat!.Id,
+                                $"#Ethereum price: {coinPrice}",
+                            cancellationToken: ctx
+                                );
+                        }
+                        else if (message.Text == "/ton")
+                        {
+                            CoinContext coin = new CoinContext();
+                            string coinPrice = coin.GetPrice("/ton");
+
+                            await botClient.SendTextMessageAsync(
+                                chat!.Id,
+                                $"#TonCoin price: {coinPrice}",
+                            cancellationToken: ctx
+                                );
+                        }
+                        else if (message.Text == "/bnb")
+                        {
+                            CoinContext coin = new CoinContext();
+                            string coinPrice = coin.GetPrice("/bnb");
+
+                            await botClient.SendTextMessageAsync(
+                                chat!.Id,
+                                $"#BNB price: {coinPrice}",
                             cancellationToken: ctx
                                 );
                         }

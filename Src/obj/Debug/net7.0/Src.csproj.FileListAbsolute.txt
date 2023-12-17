@@ -17,3 +17,4 @@ C:\Users\User\Desktop\bozon-bot\Src\bin\Debug\net7.0\Newtonsoft.Json.dll
 C:\Users\User\Desktop\bozon-bot\Src\bin\Debug\net7.0\Telegram.Bot.dll
 C:\Users\User\Desktop\bozon-bot\Src\obj\Debug\net7.0\Src.csproj.AssemblyReference.cache
 C:\Users\User\Desktop\bozon-bot\Src\obj\Debug\net7.0\Src.csproj.CopyComplete
+C:\Users\User\Desktop\bozon-bot\Src\obj\Debug\net7.0\Src.sourcelink.json
