@@ -54,81 +54,25 @@ namespace Src
 
                         if (message.Text == "/start")
                         {
-                            await botClient.SendTextMessageAsync
-                                (
-                                chat.Id,
-                                $"Welcome to the  #bozonBot:  @{from!.Username}\nType - /info for more Information",
-                                cancellationToken: ctx
-                                );
+                            SendMessage(botClient, $"Welcome to the  #bozonBot:  @{from!.Username}\nType - /info for more Information", chat, ctx);
                         }
                         else if (message.Text == "/info")
                         {
-                            await botClient.SendTextMessageAsync
-                                (
-                                chat!.Id,
-                                $"We are the bozon:io team working on cryptocurrencies,\nAnd our mission is to optimize data acquisition from the CRYPTOS\n\nFunctions:\n\n/follow - Follow on Updates\n/currency - Show all available Currency",
-                                cancellationToken: ctx
-                                );
-                        }
-                        else if (message.Text == "/currency")
-                        {
-                            await botClient.SendTextMessageAsync(
-                                chat!.Id,
-                                $"All Currency:\n\nBitcoin - /bitcoin\nEthereum - /eth\nToncoin - /ton\nBNB - /bnb",
-                                cancellationToken: ctx
-                            );
+                            SendMessage(botClient, $"We are the bozon:io team working on cryptocurrencies,\nAnd our mission is to optimize data acquisition from the CRYPTOS\n\nFunctions:\n\n/follow - Follow on Updates\n/currency - Show all available Currency", chat, ctx);
                         }
                         else if (message.Text == "/follow")
                         {
-                            await botClient.SendTextMessageAsync(
-                                chat!.Id,
-                                "\nFollow function is not available in this moment",
-                            cancellationToken: ctx
-                            );
+                            SendMessage(botClient, "\nFollow function is not available in this moment", chat, ctx);
                         }
-                        else if (message.Text == "/bitcoin")
+                        else if (message.Text == "/currency")
                         {
-                            CoinContext coin = new CoinContext();
-                            string coinPrice = coin.GetPrice("/bitcoin");
+                            CoinContext bitcoin = new CoinContext();
+                            CoinContext ethereum = new CoinContext();
+                            CoinContext bnb = new CoinContext();
+                            CoinContext toncoin = new CoinContext();
 
-                            await botClient.SendTextMessageAsync(
-                                chat!.Id,
-                                $"#Bitcoin price: {coinPrice}",
-                            cancellationToken: ctx
-                                );
-                        }
-                        else if (message.Text == "/eth")
-                        {
-                            CoinContext coin = new CoinContext();
-                            string coinPrice = coin.GetPrice("/eth");
-
-                            await botClient.SendTextMessageAsync(
-                                chat!.Id,
-                                $"#Ethereum price: {coinPrice}",
-                            cancellationToken: ctx
-                                );
-                        }
-                        else if (message.Text == "/ton")
-                        {
-                            CoinContext coin = new CoinContext();
-                            string coinPrice = coin.GetPrice("/ton");
-
-                            await botClient.SendTextMessageAsync(
-                                chat!.Id,
-                                $"#TonCoin price: {coinPrice}",
-                            cancellationToken: ctx
-                                );
-                        }
-                        else if (message.Text == "/bnb")
-                        {
-                            CoinContext coin = new CoinContext();
-                            string coinPrice = coin.GetPrice("/bnb");
-
-                            await botClient.SendTextMessageAsync(
-                                chat!.Id,
-                                $"#BNB price: {coinPrice}",
-                            cancellationToken: ctx
-                                );
+                            SendMessage(botClient, "Top 4 CryptoCurrency Price:\n\n", chat, ctx);
+                            SendMessage(botClient, $"#Bitcoin(btc) - {bitcoin.GetPrice("/btc")}\n#Ethereum(eth) - {ethereum.GetPrice("/eth")}\n#Bnbcoin(bnb) - {bnb.GetPrice("/bnb")}\n#Toncoin(ton) - {toncoin.GetPrice("/ton")}\n\nFor more information type - /all", chat, ctx);
                         }
                         break;
                 }
@@ -155,6 +99,15 @@ namespace Src
             Console.ResetColor();
 
             return Task.CompletedTask;
+        }
+
+        private static async void SendMessage(ITelegramBotClient botClient, string message, Chat? chat, CancellationToken ctx) 
+        {
+            await botClient.SendTextMessageAsync(
+                chat!.Id,
+                message,
+                cancellationToken: ctx
+                );
         }
     }
 }

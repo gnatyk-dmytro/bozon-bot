@@ -6,7 +6,7 @@ public class CoinContext
 {
     public static readonly Dictionary<string, string> CoinData = new Dictionary<string, string>
         {
-            {"/bitcoin", @"https://coinmarketcap.com/currencies/bitcoin/"},
+            {"/btc", @"https://coinmarketcap.com/currencies/bitcoin/"},
             {"/eth", @"https://coinmarketcap.com/currencies/ethereum/" },
             {"/ton", @"https://coinmarketcap.com/currencies/toncoin/" },
             {"/bnb", @"https://coinmarketcap.com/currencies/bnb/" }
