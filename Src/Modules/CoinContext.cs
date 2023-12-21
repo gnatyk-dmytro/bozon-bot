@@ -23,6 +23,8 @@ public class CoinContext
 
                 var coinPriceNode = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[1]/div[2]/div/div[2]/div/div/div[2]/div[1]/div[2]/span"); // Example XPath
 
+                Thread.Sleep(100);
+
                 if (coinPriceNode != null)
                 {
                     return coinPriceNode.InnerText.Trim();

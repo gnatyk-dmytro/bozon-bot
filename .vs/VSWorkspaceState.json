@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Src"
+    "\\Src",
+    "\\Src\\Modules"
   ],
-  "SelectedNode": "\\Src\\Program.cs",
+  "SelectedNode": "\\Src\\Src.csproj",
   "PreviewInSolutionExplorer": false
 }

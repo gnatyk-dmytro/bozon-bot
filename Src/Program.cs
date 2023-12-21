@@ -14,7 +14,7 @@ namespace Src
 
         public static async Task Main(string[] args)
         {
-            _botClient = new TelegramBotClient("YOUR_TOKEN");
+            _botClient = new TelegramBotClient("TOKEN");
             _receiverOptions = new ReceiverOptions
             {
                 AllowedUpdates = new[]
