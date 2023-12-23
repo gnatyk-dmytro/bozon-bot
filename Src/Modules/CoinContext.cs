@@ -1,10 +1,13 @@
-﻿using HtmlAgilityPack;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
+using HtmlAgilityPack;
 
-namespace Src.Modules;
-
-public class CoinContext
+namespace Src.Modules
 {
-    public static readonly Dictionary<string, string> CoinData = new Dictionary<string, string>
+    public class CoinContext
+    {
+        private static readonly Dictionary<string, string> CoinData = new Dictionary<string, string>
         {
             {"/btc", @"https://coinmarketcap.com/currencies/bitcoin/"},
             {"/eth", @"https://coinmarketcap.com/currencies/ethereum/" },
@@ -12,45 +15,44 @@ public class CoinContext
             {"/bnb", @"https://coinmarketcap.com/currencies/bnb/" }
         };
 
-    public string GetPrice(string coinName)
-    {
-        try
+        public string GetPrice(string coinName)
         {
-            if (CoinData.TryGetValue(coinName, out string url))
+            try
             {
-                HtmlWeb htmlWeb = new HtmlWeb();
-                var htmlDoc = htmlWeb.Load(url);
-
-                var coinPriceNode = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[1]/div[2]/div/div[2]/div/div/div[2]/div[1]/div[2]/span"); // Example XPath
-
-                Thread.Sleep(100);
-
-                if (coinPriceNode != null)
+                if (CoinData.TryGetValue(coinName, out string url))
                 {
-                    return coinPriceNode.InnerText.Trim();
+                    var htmlWeb = new HtmlWeb();
+                    var htmlDoc = htmlWeb.Load(url);
+
+                    var coinPriceNode = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[1]/div[2]/div/div[2]/div/div/div[2]/div[1]/div[2]/span"); // Example XPath
+
+                    if (coinPriceNode != null)
+                    {
+                        return coinPriceNode.InnerText.Trim();
+                    }
+                    else
+                    {
+                        LogError($"No price element found for {coinName}. XPath may need adjustment.");
+                    }
                 }
                 else
                 {
-                    LogError($"No price element found for {coinName}. XPath may need adjustment.");
+                    LogError($"Invalid coin name: {coinName}");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                LogError($"Invalid coin name: {coinName}");
+                LogError($"An error occurred: {ex}");
             }
+
+            return "N/A";
         }
-        catch (Exception ex)
+
+        private static void LogError(string message)
         {
-            LogError($"An error occurred: {ex}");
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
-
-        return "N/A";
-    }
-
-    private static void LogError(string message)
-    {
-        Console.ForegroundColor = ConsoleColor.DarkRed;
-        Console.WriteLine(message);
-        Console.ResetColor();
     }
 }
