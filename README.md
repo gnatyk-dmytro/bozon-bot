@@ -44,6 +44,7 @@ To use bozonBot, follow these steps:
    ```bash
    dotnet run
    ```
+5. **Keep Testing**
 ## License
 
 [MIT]](https://mit-license.org/)
