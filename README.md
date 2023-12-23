@@ -27,7 +27,17 @@ To use bozonBot, follow these steps:
 2. **Set Up Your Environment:**
    - Make sure you have the necessary dependencies installed.
    - Update your configuration with the required API keys and credentials.
-3. **Build and Run:**
+3. **Install Packages**
+   - First, install the Telegram.Bot library to work with the Telegram API
+   ```bash
+   dotnet add package Telegram.Bot --version 19.0.0
+   ```
+   - Step two: Install the HtmlAgilityPack library to parse the web
+   ```bash
+   dotnet add package HtmlAgilityPack --version 1.11.57
+   ```
+
+4. **Build and Run:**
    ```bash
    dotnet build 
    ```
