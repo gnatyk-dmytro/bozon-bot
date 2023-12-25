@@ -14,13 +14,21 @@ namespace Src
 {
     internal class Program
     {
-        private static ITelegramBotClient? _botClient;
-        private static ReceiverOptions? _receiverOptions;
+        private static ITelegramBotClient _botClient;
+        private static ReceiverOptions _receiverOptions;
 
         public static async Task Main(string[] args)
         {
-            InitializeBotClient();
-            SetupReceiverOptions();
+            _botClient = new TelegramBotClient("TOKEN");
+            _receiverOptions = new ReceiverOptions
+            {
+                AllowedUpdates = new[]
+                {
+                    UpdateType.Message,
+                    UpdateType.CallbackQuery,
+                },
+                ThrowPendingUpdates = true
+            };
 
             using var cancellationTokenSource = new CancellationTokenSource();
 
@@ -35,24 +43,6 @@ namespace Src
             await Task.Delay(-1, cancellationTokenSource.Token);
         }
 
-        private static void InitializeBotClient()
-        {
-            _botClient = new TelegramBotClient("TOKEN");
-        }
-
-        private static void SetupReceiverOptions()
-        {
-            _receiverOptions = new ReceiverOptions
-            {
-                AllowedUpdates = new[]
-                {
-                    UpdateType.Message,
-                    UpdateType.CallbackQuery,
-                },
-                ThrowPendingUpdates = true
-            };
-        }
-
         private static async Task UpdateHandler(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
         {
             try
@@ -62,25 +52,23 @@ namespace Src
                     case UpdateType.Message:
                         await HandleMessageUpdate(botClient, update.Message, cancellationToken);
                         break;
-
-                    case UpdateType.CallbackQuery:
-                        await KeyboardUpdates(botClient, update, cancellationToken);
+                    default:
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("\nUndefined type of Message");
+                        Console.ResetColor();
                         break;
                 }
             }
             catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
                 Console.ResetColor();
             }
         }
 
         private static async Task HandleMessageUpdate(ITelegramBotClient botClient, Message message, CancellationToken cancellationToken)
         {
-            if (message == null || message.From == null || message.Chat == null)
-                return;
-
             var chat = message.Chat;
             var from = message.From;
 
@@ -114,6 +102,10 @@ namespace Src
             {
                 await SendCryptoInfoKeyboard(botClient, chat);
             }
+            else if (message.Text == "bitcoin")
+            {
+                await SendMessage(botClient, $"Historical Data of bitcoin:\n\nCurrent price - {bitcoin.GetPrice("/btc")}", chat, cancellationToken);
+            }
         }
 
         private static async Task SendCryptoInfoKeyboard(ITelegramBotClient botClient, Chat chat)
@@ -136,21 +128,7 @@ namespace Src
                 ResizeKeyboard = true
             };
 
-            await botClient.SendTextMessageAsync(
-                chat.Id,
-                "Crypto currency info:",
-                replyMarkup: replyKeyboard
-            );
-        }
-
-        private static async Task KeyboardUpdates(ITelegramBotClient client, Update update, CancellationToken ctx)
-        {
-            var callbackQuery = update.CallbackQuery;
-            var user = callbackQuery.From;
-
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine($"#{user.Username} type the button: {callbackQuery.Data}\n");
-            Console.ResetColor();
+            await botClient.SendTextMessageAsync(chat.Id, "Crypto currency info:", replyMarkup: replyKeyboard);
         }
 
         private static Task ErrorHandler(ITelegramBotClient botClient, Exception ex, CancellationToken cancellationToken)
@@ -168,13 +146,9 @@ namespace Src
             return Task.CompletedTask;
         }
 
-        private static async Task SendMessage(ITelegramBotClient botClient, string message, Chat chat, CancellationToken cancellationToken)
+        private static async Task SendMessage(ITelegramBotClient botClient, string message, Chat chat, CancellationToken ctx)
         {
-            await botClient.SendTextMessageAsync(
-                chat.Id,
-                message,
-                cancellationToken: cancellationToken
-            );
+            await botClient.SendTextMessageAsync(chat!.Id, message, cancellationToken: ctx);
         }
     }
 }

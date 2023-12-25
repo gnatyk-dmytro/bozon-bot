@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Modules"
   ],
-  "SelectedNode": "\\Program.cs",
+  "SelectedNode": "\\Modules\\CoinContext.cs",
   "PreviewInSolutionExplorer": false
 }

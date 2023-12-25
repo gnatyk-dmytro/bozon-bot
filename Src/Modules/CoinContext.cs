@@ -24,6 +24,7 @@ namespace Src.Modules
                     var htmlWeb = new HtmlWeb();
                     var htmlDoc = htmlWeb.Load(url);
 
+                    Thread.Sleep(1000 * 2);
                     var coinPriceNode = htmlDoc.DocumentNode.SelectSingleNode("/html/body/div[1]/div[2]/div/div[2]/div/div/div[2]/div[1]/div[2]/span"); // Example XPath
 
                     if (coinPriceNode != null)
