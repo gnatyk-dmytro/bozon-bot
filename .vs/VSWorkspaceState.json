@@ -2,7 +2,9 @@
   "ExpandedNodes": [
     "",
     "\\Src",
+    "\\Src\\DataBase",
     "\\Src\\Modules"
   ],
+  "SelectedNode": "\\Src\\Src.csproj",
   "PreviewInSolutionExplorer": false
 }

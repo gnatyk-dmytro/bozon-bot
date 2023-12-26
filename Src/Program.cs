@@ -84,27 +84,20 @@ namespace Src
             if (message.Text == "/start")
             {
                 await SendMessage(botClient, $"Welcome to the #bozonBot: @{from.Username}\nType - /info for more Information", chat, cancellationToken);
+                await SendCryptoInfoKeyboard(botClient, chat);
             }
-            else if (message.Text == "/info")
+            else if ((message.Text == "/info") || (message.Text != null && message.Text.ToLower() == "info"))
             {
                 await SendMessage(botClient, $"We are the bozon:io team working on cryptocurrencies,\nAnd our mission is to optimize data acquisition from the CRYPTOS\n\nFunctions:\n\n/follow - Follow on Updates\n/currency - Show all available Currency", chat, cancellationToken);
             }
-            else if (message.Text == "/follow")
+            else if ((message.Text == "/follow") || (message.Text != null && message.Text.ToLower() == "follow"))
             {
                 await SendMessage(botClient, "\nFollow function is not available at this moment", chat, cancellationToken);
             }
-            else if (message.Text == "/currency")
+            else if ((message.Text == "/cryptoprice") || (message.Text != null && message.Text.ToLower() == "cryptoprice"))
             {
                 await SendMessage(botClient, "Top 4 CryptoCurrency Price:\n\n", chat, cancellationToken);
                 await SendMessage(botClient, $"#Bitcoin(btc) - {bitcoin.GetPrice("/btc")}\n#Ethereum(eth) - {ethereum.GetPrice("/eth")}\n#Bnbcoin(bnb) - {bnb.GetPrice("/bnb")}\n#Toncoin(ton) - {toncoin.GetPrice("/ton")}\n\nFor more information type - /all", chat, cancellationToken);
-            }
-            else if (message.Text == "/all")
-            {
-                await SendCryptoInfoKeyboard(botClient, chat);
-            }
-            else if (message.Text == "bitcoin")
-            {
-                await SendMessage(botClient, $"Historical Data of bitcoin:\n\nCurrent price - {bitcoin.GetPrice("/btc")}", chat, cancellationToken);
             }
         }
 
@@ -115,13 +108,13 @@ namespace Src
                 {
                     new KeyboardButton[]
                     {
-                        new KeyboardButton("bitcoin"),
-                        new KeyboardButton("ethereum")
+                        new KeyboardButton("info"),
+                        new KeyboardButton("follow")
                     },
                     new KeyboardButton[]
                     {
-                        new KeyboardButton("bnbcoin"),
-                        new KeyboardButton("toncoin")
+                        new KeyboardButton("cryptoprice"),
+                        new KeyboardButton("convert")
                     }
                 })
             {
